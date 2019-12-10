@@ -60,9 +60,25 @@
 
         <parameter name="FadeInterval" type="Integer">
             <setting id="clip" value="true"/>
-            <setting id="min" value="10"/>
-            <setting id="max" value="500"/>
+            <setting id="min" value="300"/>
+            <setting id="max" value="5000"/>
             <setting id="default" value="20"/>
+            <setting id="use_eeprom" value="true"/>
+            <setting id="type" value="uint16_t"/>
+        </parameter>
+
+        <parameter name="FadeCount" type="Integer">
+            <setting id="clip" value="true"/>
+            <setting id="min" value="0"/>
+            <setting id="default" value="3"/>
+            <setting id="use_eeprom" value="true"/>
+            <setting id="type" value="uint8_t"/>
+        </parameter>
+
+        <parameter name="Delay" type="Integer">
+            <setting id="clip" value="true"/>
+            <setting id="min" value="20"/>
+            <setting id="default" value="5000"/>
             <setting id="use_eeprom" value="true"/>
             <setting id="type" value="uint16_t"/>
         </parameter>
