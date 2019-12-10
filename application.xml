@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+
+<board type="Arduino Nano" name="cryptology-dr-door">
+    <info>
+        An RFID-activated Neopixel display
+    </info>
+    
+    <devices>
+        <device name="NeoPixels" type="Adafruit NeoPixel">
+            <setting id="pin" value="5"/>
+            <setting id="npixels" value="41"/>
+        </device>
+        <device name="RFID" type="RFID RC522">
+            <setting id="ss" value="10"/>
+            <setting id="rst" value="9"/>
+        </device>
+        <device name="Test Button" type="Debounced Input">
+            <setting id="pin" name="Input" value="6"/>
+            <setting id="debounce_time" value="50"/>
+            <setting id="pullup" value="true"/>
+        </device>
+    </devices>
+
+    <parameters>
+        <parameter name="StartColour" type="RGB">
+            <setting id="limit" value="255"/>
+            <setting id="clip" value="true"/>
+            <setting id="r_default" value="96"/>
+            <setting id="g_default" value="96"/>
+            <setting id="b_default" value="142"/>
+            <setting id="use_eeprom" value="true"/>
+        </parameter>
+
+        <parameter name="EndColour" type="RGB">
+            <setting id="limit" value="255"/>
+            <setting id="clip" value="true"/>
+            <setting id="r_default" value="16"/>
+            <setting id="g_default" value="0"/>
+            <setting id="b_default" value="0"/>
+            <setting id="use_eeprom" value="true"/>
+        </parameter>
+
+        <parameter name="PatternLength" type="Integer">
+            <setting id="clip" value="true"/>
+            <setting id="min" value="2"/>
+            <setting id="max" value="20"/>
+            <setting id="default" value="5"/>
+            <setting id="use_eeprom" value="true"/>
+            <setting id="type" value="uint8_t"/>
+        </parameter>
+
+        <parameter name="PatternInterval" type="Integer">
+            <setting id="clip" value="true"/>
+            <setting id="min" value="10"/>
+            <setting id="max" value="500"/>
+            <setting id="default" value="20"/>
+            <setting id="use_eeprom" value="true"/>
+            <setting id="type" value="uint16_t"/>
+        </parameter>
+
+        <parameter name="FadeInterval" type="Integer">
+            <setting id="clip" value="true"/>
+            <setting id="min" value="10"/>
+            <setting id="max" value="500"/>
+            <setting id="default" value="20"/>
+            <setting id="use_eeprom" value="true"/>
+            <setting id="type" value="uint16_t"/>
+        </parameter>
+
+    </parameters>
+
+    <raat protocol="url"></raat>
+    
+    <logging>
+        <log_module>APPLICATION</log_module>
+    </logging>
+
+    <modules>
+        <module>Task</module>
+    </modules>
+
+    <custom_code>
+        <file>application.cpp</file>
+    </custom_code>
+</board>
