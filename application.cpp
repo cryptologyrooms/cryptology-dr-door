@@ -40,6 +40,12 @@ typedef struct run_data
     uint8_t fader[3];
 } RUN_DATA;
 
+typedef struct rfid_data
+{
+    RFID_RC522 * pRFIDReader;
+    bool rfid_present;
+} RFID_DATA;
+
 static void draw_pattern(RUN_DATA& run_data)
 {
     uint8_t rgb[3];
@@ -232,6 +238,15 @@ static void start_pattern(const raat_devices_struct& devices, const raat_params_
 
 }
 
+static void rfid_task_fn(RAATTask& task, void * pTaskData)
+{
+    (void)task;
+    char uid[12];
+    RFID_DATA* pRFIDData = (RFID_DATA*)pTaskData;
+    pRFIDData->rfid_present = pRFIDData->pRFIDReader->get(uid);
+}
+static RAATTask s_rfid_task(250, rfid_task_fn, NULL);
+
 void raat_custom_setup(const raat_devices_struct& devices, const raat_params_struct& params)
 {
     (void)devices;
@@ -261,9 +276,21 @@ void raat_custom_loop(const raat_devices_struct& devices, const raat_params_stru
         .fader = {0}
     };
 
-    if (devices.pTest_Button->check_low_and_clear())
+    static RFID_DATA s_rfid_data = {
+        .pRFIDReader = devices.pRFID,
+        .rfid_present = false
+    };
+
+    if (s_run_data.pattern_state == eState_Idle)
     {
-        if (s_run_data.pattern_state == eState_Idle)
+        s_rfid_task.run(&s_rfid_data);
+
+        if (check_and_clear(s_rfid_data.rfid_present))
+        {
+            raat_logln(LOG_APP, "Starting pattern (button press)");
+            start_pattern(devices, params, s_run_data);
+        }
+        else if (devices.pTest_Button->check_low_and_clear())
         {
             raat_logln(LOG_APP, "Starting pattern (button press)");
             start_pattern(devices, params, s_run_data);
@@ -276,6 +303,7 @@ void raat_custom_loop(const raat_devices_struct& devices, const raat_params_stru
         if (s_run_data.pattern_state == eState_Idle)
         {
             raat_logln(LOG_APP, "Pattern done");
+            devices.pOutput_Relay->set(true, 5000);
         }
     }
 }

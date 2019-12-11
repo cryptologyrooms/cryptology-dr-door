@@ -10,15 +10,22 @@
             <setting id="pin" value="5"/>
             <setting id="npixels" value="41"/>
         </device>
+
         <device name="RFID" type="RFID RC522">
             <setting id="ss" value="10"/>
             <setting id="rst" value="9"/>
         </device>
+
         <device name="Test Button" type="Debounced Input">
             <setting id="pin" name="Input" value="6"/>
             <setting id="debounce_time" value="50"/>
             <setting id="pullup" value="true"/>
         </device>
+
+        <device name="Output Relay" type="Digital Output">
+            <setting id="pin" value="2"/>
+        </device>
+
     </devices>
 
     <parameters>
